@@ -1,49 +1,44 @@
 module.exports = function check(str, bracketsConfig) {
-    let config = bracketsConfig.toString();
-    config = config.replace(/,/g,"" );
-    let control = 0;
-    for(let char of str){
-        let index = config.indexOf(char);
-        let test = index%2;
-        if (index == -1){
-            continue;
-        }else if(test != 0){
-            control -= 1;
-        }else{
-            control += 1;
+    let controlArr = [];
+    for(let char of str) {
+        let checkArr;
+        for (let i = 0; i < bracketsConfig.length; i++) {
+            for (let j = 0; j < bracketsConfig[i].length; j++) {
+                if (bracketsConfig[i][j] == char) {
+                    checkArr = [i, j];
+                }
+            }
         }
-        if(control >= 0){
-            continue;
-        }else {
-            return false;
+        if(checkArr[1] == 0){
+            controlArr.push(checkArr);
+        }else if(controlArr.length != 0 && controlArr[controlArr.length - 1][0] == checkArr[0]){
+            controlArr.pop();
         }
+        else return false;
     }
-    if(control != 0) return false;
-    return true;
+    return (controlArr.length != 0) ? false : true;
 }
 /*const config1 = [['(', ')']];
 function check (str, bracketsConfig){
-    let config = bracketsConfig.toString();
-    config = config.replace(/,/g,"" );
-    let control = 0;
-    for(let char of str){
-       let index = config.indexOf(char);
-       let test = index%2;
-       if (index == -1){
-           continue;
-       }else if(test != 0){
-           control -= 1;
-       }else{
-           control += 1;
-       }
-       if(control >= 0){
-           continue;
-       }else {
-           return false;
-       }
+    let controlArr = [];
+    for(let char of str) {
+        let checkArr;
+        for (let i = 0; i < bracketsConfig.length; i++) {
+            for (let j = 0; j < bracketsConfig[i].length; j++) {
+                if (bracketsConfig[i][j] == char) {
+                    checkArr = [i, j];
+                }
+            }
+        }
+        if(checkArr[1] == 0){
+            controlArr.push(checkArr);
+        }else if(controlArr.length != 0 && controlArr[controlArr.length - 1][0] == checkArr[0]){
+            controlArr.pop();
+        }
+        else return false;
     }
-    if(control != 0) return false;
-    return true;
-    //alert(config);
+    return (controlArr.length != 0) ? false : true;
+   // alert('!')
+
 }
 check('())(', config1);*/
